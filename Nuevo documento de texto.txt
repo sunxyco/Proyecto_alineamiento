@@ -1,1 +1,20 @@
-llksjfl
+documento apuntes proyecto
+
+programa -> alineamiento de 2 secuencias en .txt
+
+para calcular similitud de los pareamientos se usa la funcion U
+
+parametros de entrada cadena1 cadena2 funcionU val
+ - cadena1 -> cadena nucleotidos S
+ - cadena2 -> cadena nucleotidos T
+ - funcionU -> puntajes de pareamientos
+ - val -> valor de penalidad por abrir un gap
+
+en la guia de el proyecto hay pseudocodigo de
+
+ - Codigo hallar maximo puntaje alineamiento cadenas S & T -> matris de numeros
+ - a partir de la matriz anterior reconstruir alineamiento puntaje maximo -> concadena las secuencias alineandolas
+
+que hacer -> - abrir archivos .txt
+             - ver parametros de entrada
+             - como hacer la funcionU
