@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 using namespace std;
 
 //parametros de entrada ->  -C1 cad1.tex -C2 cad2.tex -U funU.tex -V val
@@ -49,11 +50,84 @@ int** generar_funcionU(string input){
     return matriz;
 }
 
+int funcionU(int** matrizU, char caracter_s, char caracter_t){
+    int indice_s;
+    int indice_t;
+
+    if(caracter_s == 'A'){
+        indice_s = 0;
+    }else if(caracter_s == 'C'){
+        indice_s = 1;
+    }else if(caracter_s == 'G'){
+        indice_s = 2;
+    }else if(caracter_s == 'T'){
+        indice_s = 3;
+    }
+
+    if(caracter_t == 'A'){
+        indice_t = 0;
+    }else if(caracter_t == 'C'){
+        indice_t = 1;
+    }else if(caracter_t == 'G'){
+        indice_t = 2;
+    }else if(caracter_t == 'T'){
+        indice_t = 3;
+    }
+
+    return matrizU[indice_s][indice_t];
+}
+
+int** generarMatrizAlineamiento(string cadena_S, string cadena_t, int** matriz_U, int valor_penalidad){
+    int n = cadena_S.size();
+    int m = cadena_t.size();
+
+    cout << "matri1";
+
+    //crear una matriz dinámica de tamaño n x m -> para el algoritmo
+    int** matriz = new int*[n];
+    for (int i = 0; i < n; i++) {
+        matriz[i] = new int[m];
+    }
+
+    cout << "matri2";
+
+
+    //se rellenar la matriz segun el algoritmo
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (i == 0 && j == 0) {
+                matriz[i][j] = 0;
+            } else if (i > 0 && j == 0) {
+                matriz[i][j] = matriz[i - 1][j] + valor_penalidad;
+            } else if (i == 0 && j > 0) {
+                matriz[i][j] = matriz[i][j - 1] + valor_penalidad;
+            } else {
+                int a = matriz[i - 1][j] + valor_penalidad;   //No emparejar S[i]
+                int b = matriz[i][j - 1] + valor_penalidad;   //No emparejar T[j]
+                    cout << "matri3";
+
+                char caracter_s = cadena_S[i];
+                char caracter_t = cadena_t[j];
+
+                int c = matriz[i - 1][j - 1] + funcionU(matriz_U, caracter_s, caracter_t); // Emparejar S[i] y T[j]
+                    cout << "matri4";
+
+                matriz[i][j] = max(a, max(b, c)); // Máximo de las opciones
+            }
+        }
+    }
+
+    cout << endl;
+
+    return matriz;
+}
+
 int main(int argc, char *argv[]){
     
     //leer archivo -> entrada_ejemplo = -C1 S.tex -C2 T.tex -u funU.tex -V -2
     ifstream file1(argv[2]);
     ifstream file2(argv[4]);
+    ifstream file3(argv[6]);
 
     string cadena1;
     file1 >> cadena1;
@@ -62,6 +136,14 @@ int main(int argc, char *argv[]){
     string cadena2;
     file2 >> cadena2;
     file2.close();
+
+    string v;
+    file3 >> v;
+    file3.close();
+
+    int valor_penalidad = stoi(v);
+    valor_penalidad = valor_penalidad * -1;
+    cout << "valor penalidad ~~ " << valor_penalidad;
 
     //funcionU -> [4][4] ~ matriz de tamaño dinamico porque sino c++ kaput
     int** funcionU = generar_funcionU(argv[6]);
@@ -87,6 +169,17 @@ int main(int argc, char *argv[]){
         }
         cout << endl;
     }
+
+    int** matriz_alineamiento = generarMatrizAlineamiento(cadena1, cadena2, funcionU, valor_penalidad);
+
+
+    for (int i = 0; i < cadena1.size(); i++) {
+        for (int j = 0; j < cadena2.size(); j++) {
+            cout << matriz_alineamiento[i][j] << ", ";
+        }
+        cout << endl;
+    }
+    
 
     return 0;
 }
