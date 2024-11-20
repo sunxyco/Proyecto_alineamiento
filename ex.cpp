@@ -80,6 +80,9 @@ int funcionU(int** matrizU, char caracter_s, char caracter_t){
 int** generarMatrizAlineamiento(string cadena_S, string cadena_t, int** matriz_U, int valor_penalidad){
     int n = cadena_S.size();
     int m = cadena_t.size();
+    //cout << n;
+    n++;
+    m++;
 
     cout << "matri1";
 
@@ -106,8 +109,8 @@ int** generarMatrizAlineamiento(string cadena_S, string cadena_t, int** matriz_U
                 int b = matriz[i][j - 1] + valor_penalidad;   //No emparejar T[j]
                     cout << "matri3";
 
-                char caracter_s = cadena_S[i];
-                char caracter_t = cadena_t[j];
+                char caracter_s = cadena_S[i - 1];
+                char caracter_t = cadena_t[j - 1];
 
                 int c = matriz[i - 1][j - 1] + funcionU(matriz_U, caracter_s, caracter_t); // Emparejar S[i] y T[j]
                     cout << "matri4";
@@ -120,6 +123,41 @@ int** generarMatrizAlineamiento(string cadena_S, string cadena_t, int** matriz_U
     cout << endl;
 
     return matriz;
+}
+
+void reconstruirAlineamiento(string cadenaS, string cadenaT, int** matrizAlineamiento, int n, int m, int v){
+    string alineamientoS = "";
+    string alineamientoT = "";
+
+    int i = n;
+    int j = m;
+
+    while(i > 0 || j > 0) {
+        if(i > 0 && j == 0) {
+            alineamientoS = cadenaS[i-1] + alineamientoS;
+            alineamientoT = "-" + alineamientoT;
+            i--;
+        }else if(i == 0 && j > 0){
+            alineamientoS = "-" + alineamientoS;
+            alineamientoT = cadenaT[j-1] + alineamientoT;
+            j--;
+        }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i-1][j] + v){
+            alineamientoS = cadenaS[i-1] + alineamientoS;
+            alineamientoT = "-" + alineamientoT;
+            i--;
+        }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i][j-1] + v) {
+            alineamientoS = "-" + alineamientoS;
+            alineamientoT = cadenaT[j-1] + alineamientoT;
+            j--;
+        }else{
+            alineamientoS = cadenaS[i-1] + alineamientoS;
+            alineamientoT = cadenaT[j-1] + alineamientoT;
+            i--;
+            j--;
+        }
+    }
+
+    cout << "\nAlineamientos\n\n" << alineamientoS << "\n" << alineamientoT << endl;
 }
 
 int main(int argc, char *argv[]){
@@ -172,13 +210,17 @@ int main(int argc, char *argv[]){
 
     int** matriz_alineamiento = generarMatrizAlineamiento(cadena1, cadena2, funcionU, valor_penalidad);
 
+    int n = ((cadena1.size()) + 1);
+    int m = ((cadena2.size()) + 1);
 
-    for (int i = 0; i < cadena1.size(); i++) {
-        for (int j = 0; j < cadena2.size(); j++) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
             cout << matriz_alineamiento[i][j] << ", ";
         }
         cout << endl;
     }
+
+    reconstruirAlineamiento(cadena1, cadena2, matriz_alineamiento, n - 2, m - 2, valor_penalidad);
     
 
     return 0;
