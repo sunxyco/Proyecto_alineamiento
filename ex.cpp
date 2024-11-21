@@ -132,26 +132,26 @@ void reconstruirAlineamiento(string cadenaS, string cadenaT, int** matrizAlineam
     int i = n;
     int j = m;
 
-    while(i > 0 || j > 0) {
+    while(i >= 0 || j >= 0) {
         if(i > 0 && j == 0) {
-            alineamientoS = cadenaS[i-1] + alineamientoS;
+            alineamientoS = cadenaS[i] + alineamientoS;
             alineamientoT = "-" + alineamientoT;
             i--;
         }else if(i == 0 && j > 0){
             alineamientoS = "-" + alineamientoS;
-            alineamientoT = cadenaT[j-1] + alineamientoT;
+            alineamientoT = cadenaT[j] + alineamientoT;
             j--;
-        }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i-1][j] + v){
-            alineamientoS = cadenaS[i-1] + alineamientoS;
+        }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i][j] + v){
+            alineamientoS = cadenaS[i] + alineamientoS;
             alineamientoT = "-" + alineamientoT;
             i--;
-        }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i][j-1] + v) {
+        }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i][j] + v) {
             alineamientoS = "-" + alineamientoS;
-            alineamientoT = cadenaT[j-1] + alineamientoT;
+            alineamientoT = cadenaT[j] + alineamientoT;
             j--;
         }else{
-            alineamientoS = cadenaS[i-1] + alineamientoS;
-            alineamientoT = cadenaT[j-1] + alineamientoT;
+            alineamientoS = cadenaS[i] + alineamientoS;
+            alineamientoT = cadenaT[j] + alineamientoT;
             i--;
             j--;
         }
@@ -165,7 +165,8 @@ int main(int argc, char *argv[]){
     //leer archivo -> entrada_ejemplo = -C1 S.tex -C2 T.tex -u funU.tex -V -2
     ifstream file1(argv[2]);
     ifstream file2(argv[4]);
-    ifstream file3(argv[6]);
+    //ifstream file3(argv[6]);
+    string valor_penalidad_string = argv[8];
 
     string cadena1;
     file1 >> cadena1;
@@ -176,12 +177,12 @@ int main(int argc, char *argv[]){
     file2.close();
 
     string v;
-    file3 >> v;
-    file3.close();
+    //file3 >> v;
+    //file3.close();
 
-    int valor_penalidad = stoi(v);
+    int valor_penalidad = stoi(valor_penalidad_string);
     valor_penalidad = valor_penalidad * -1;
-    cout << "valor penalidad ~~ " << valor_penalidad;
+    cout << "valor penalidad ~~ " << valor_penalidad << endl;
 
     //funcionU -> [4][4] ~ matriz de tamaño dinamico porque sino c++ kaput
     int** funcionU = generar_funcionU(argv[6]);
