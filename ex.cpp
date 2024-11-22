@@ -84,7 +84,7 @@ int** generarMatrizAlineamiento(string cadena_S, string cadena_t, int** matriz_U
     n++;
     m++;
 
-    cout << "matri1";
+    //cout << "matri1";
 
     //crear una matriz dinámica de tamaño n x m -> para el algoritmo
     int** matriz = new int*[n];
@@ -92,7 +92,7 @@ int** generarMatrizAlineamiento(string cadena_S, string cadena_t, int** matriz_U
         matriz[i] = new int[m];
     }
 
-    cout << "matri2";
+    //cout << "matri2";
 
 
     //se rellenar la matriz segun el algoritmo
@@ -107,13 +107,13 @@ int** generarMatrizAlineamiento(string cadena_S, string cadena_t, int** matriz_U
             } else {
                 int a = matriz[i - 1][j] + valor_penalidad;   //No emparejar S[i]
                 int b = matriz[i][j - 1] + valor_penalidad;   //No emparejar T[j]
-                    cout << "matri3";
+                    //cout << "matri3";
 
                 char caracter_s = cadena_S[i - 1];
                 char caracter_t = cadena_t[j - 1];
 
                 int c = matriz[i - 1][j - 1] + funcionU(matriz_U, caracter_s, caracter_t); // Emparejar S[i] y T[j]
-                    cout << "matri4";
+                    //cout << "matri4";
 
                 matriz[i][j] = max(a, max(b, c)); // Máximo de las opciones
             }
@@ -141,11 +141,11 @@ void reconstruirAlineamiento(string cadenaS, string cadenaT, int** matrizAlineam
             alineamientoS = "-" + alineamientoS;
             alineamientoT = cadenaT[j] + alineamientoT;
             j--;
-        }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i][j] + v){
+        }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i-1][j] + v){
             alineamientoS = cadenaS[i] + alineamientoS;
             alineamientoT = "-" + alineamientoT;
             i--;
-        }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i][j] + v) {
+        }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i][j-1] + v) {
             alineamientoS = "-" + alineamientoS;
             alineamientoT = cadenaT[j] + alineamientoT;
             j--;
