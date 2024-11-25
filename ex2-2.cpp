@@ -259,10 +259,33 @@ void visualizarBonito(string alineamientoS, string alineamientoT){
     fp << "\n// Nodos para la primera cadena\n";
 
     int contador_bases_S = 0;
+    string colorDeLetra;
+        
+    for(int i = -1; i < n; i++){
 
-    for(int i = 0; i < n; i++){
+        
+        //para la caja indica que cadena es cual
+        if(i==-1){
+            fp << "S0 [label=\"S -> \" shape=box];\n";
+            continue;
+        }
+
         contador_bases_S++;
-        fp << "S" << contador_bases_S << " [label = \"" << alineamientoS[i] << "\" ];\n";            
+
+        if (alineamientoS[i] == 'A') {
+            colorDeLetra = "green";
+        } else if (alineamientoS[i] == 'T') {
+            colorDeLetra = "red";
+        } else if (alineamientoS[i] == 'C') {
+            colorDeLetra = "blue";
+        } else if (alineamientoS[i] == 'G') {
+            colorDeLetra = "yellow";
+        } else {
+            colorDeLetra = "grey";
+        }
+
+        fp << "S" << contador_bases_S 
+        << " [label=\"" << alineamientoS[i] << "\" color=\"" << colorDeLetra << "\"];\n";
     }
 
 
@@ -271,9 +294,31 @@ void visualizarBonito(string alineamientoS, string alineamientoT){
 
     int contador_bases_T = 0;
 
-    for(int j = 0; j < n; j++){
+    for(int j = -1; j < n; j++){
+
+        if(j==-1){
+            fp << "T0 [label=\"T -> \" shape=box];\n";
+            continue;
+        }
+
         contador_bases_T++;
-        fp << "T" << contador_bases_T << " [label = \"" << alineamientoT[j] << "\" ];\n";            
+
+        if (alineamientoT[j] == 'A') {
+            colorDeLetra = "green";
+        } else if (alineamientoT[j] == 'T') {
+            colorDeLetra = "red";
+        } else if (alineamientoT[j] == 'C') {
+            colorDeLetra = "blue";
+        } else if (alineamientoT[j] == 'G') {
+            colorDeLetra = "yellow";
+        } else {
+            colorDeLetra = "grey";
+        }
+
+        fp << "T" << contador_bases_T 
+        << " [label=\"" << alineamientoT[j] << "\" color=\"" << colorDeLetra << "\"];\n";
+
+                
     }
 
     //----------------------------------------------------------------------------------------------------
@@ -284,12 +329,12 @@ void visualizarBonito(string alineamientoS, string alineamientoT){
     string gap_s = "";
     int contador_bases_S2 = 0;
 
-    for(int i = 0; i < n; i++){
+    for(int i = 0; i <= n; i++){
 
-        contador_bases_S2++;
         string base_S = "S" + to_string(contador_bases_S2);
 
-        rank_s = rank_s + base_S + "; ";    
+        rank_s = rank_s + base_S + "; ";
+        contador_bases_S2++;
 
     }
     fp <<rank_s<<" }\n";
@@ -302,14 +347,14 @@ void visualizarBonito(string alineamientoS, string alineamientoT){
     string gap_t = "";
     int contador_bases_T2 = 0;
 
-    for(int j = 0; j < n; j++){
+    for(int j = 0; j <= n; j++){
 
-        contador_bases_T2++;
         string base_T = "T" + to_string(contador_bases_T2);
 
         rank_t = rank_t + base_T + "; ";    
     
-        
+        contador_bases_T2++;
+
     }
     fp <<rank_t<<" }\n";
 
@@ -317,7 +362,7 @@ void visualizarBonito(string alineamientoS, string alineamientoT){
     fp << "\n// Conexiones dentro de cada cadena\n\n";
     
     //cadena 1 - S
-    string conexion_s = "";
+    string conexion_s = "S0 -- ";
     int contador_gaps_3 = 0;
     string gap_s2 = "";
     int contador_bases_S3 = 0;
@@ -344,7 +389,7 @@ void visualizarBonito(string alineamientoS, string alineamientoT){
     
     // --------------------------------------------------------------- 
     //cadena 2 - T
-    string conexion_t = "";
+    string conexion_t = "T0 -- ";
     string gap_t2 = "";
     int contador_bases_T3 = 0;
 
@@ -380,7 +425,7 @@ void visualizarBonito(string alineamientoS, string alineamientoT){
             string baseS = "S" + to_string(i + 1);
             string baseT = "T" + to_string(i + 1);
                                                 //linea discontinua y negra
-            fp << baseS << " -- " << baseT << " [style=dashed, penwidth=3, color=black];\n";
+            fp << baseS << " -- " << baseT << " [style=dashed, penwidth=7, color=black];\n";
 
         }else{
             kelly++;
@@ -389,13 +434,13 @@ void visualizarBonito(string alineamientoS, string alineamientoT){
                 string baseS = "S" + to_string(i + 1);
                 string baseT = "T" + to_string(i + 1);
                                                     //linea gruesa y azul
-                fp << baseS << " -- " << baseT << " [style=bold, color=blue];\n";
+                fp << baseS << " -- " << baseT << " [penwidth=9, color=green];\n";
             }else{
             //letras diferentes
                 string baseS = "S" + to_string(i + 1);
                 string baseT = "T" + to_string(i + 1);
                                                     //linea roja
-                fp << baseS << " -- " << baseT << " [style=bold, color=red];\n";
+                fp << baseS << " -- " << baseT << " [penwidth=9, color=red];\n";
             }
         }
 
