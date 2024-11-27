@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <ctime>
+#include <chrono>
 using namespace std;
 
 //parametros de entrada ->  -C1 cad1.tex -C2 cad2.tex -U funU.tex -V val
@@ -194,7 +196,7 @@ void visualizarAlineamiento(string alineamientoS, string alineamientoT){
     //int m = alineamientoT.size();
 
     // crear el archivo de salida
-    std::ofstream fp("bonito.txt");
+    std::ofstream fp("alineamiento.txt");
 
     // manejo errores
     if (!fp.is_open()) {
@@ -203,7 +205,7 @@ void visualizarAlineamiento(string alineamientoS, string alineamientoT){
     }
 
     // escribir el grafo en formato DOT
-    fp << "graph bonito {\n";
+    fp << "graph alineamiento {\n";
 
 
     fp << "rankdir=HR;\n";        //hrientación horizontal
@@ -409,7 +411,7 @@ void visualizarAlineamiento(string alineamientoS, string alineamientoT){
 
     fp.close();
 
-    std::cout << "\nArchivo 'bonito.txt' generado correctamente.\n";
+    std::cout << "\nArchivo 'alineamiento.txt' generado correctamente.\n";
 }
 
 
@@ -437,7 +439,7 @@ int main(int argc, char *argv[]){
     
     // leer y validar archivos de entrada
     if(!file1.is_open()){
-        cout << "\nError al abrir archivo -C1 \"" << argv[2] << "\", Por favor verifique que esté bien escrito y el archivo existe\n";
+        cout << "\nError al abrir archivo -C1 \"" << argv[2] << "\", Por favor verifique que este bien escrito y el archivo existe\n";
         return -1;
     }
     
@@ -497,6 +499,9 @@ int main(int argc, char *argv[]){
         cout << endl;
     }
 
+    // inicio tiempo execution
+    auto start = std::chrono::high_resolution_clock::now();
+
     int** matriz_alineamiento = generarMatrizAlineamiento(cadena1, cadena2, funcionU, valor_penalidad);
 
     int n = ((cadena1.size()) + 1);
@@ -514,13 +519,21 @@ int main(int argc, char *argv[]){
     
     cout<<"\n\n";
 
+    // fin tiempo execution
+    auto end = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double> duration = (end-start);
+    
+
+    cout<<"Tiempo ejecucion: "<< duration.count() << " segundos\n";
+
     //visualizarAlineamiento(alineamientoS, alineamientoT);
 
     visualizarAlineamiento(alineamientoS, alineamientoT);
 
     // crear imagen del grafo usando Graphviz    
     //system("dot -Tpng bbb.txt -o bbb.png");
-    system("dot -Tpng bonito.txt -o bonito.png");
+    system("dot -Tpng alineamiento.txt -o alineamiento.png\n");
 
     return 0;
 }
