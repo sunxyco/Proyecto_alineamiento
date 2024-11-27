@@ -34,16 +34,13 @@ int** generar_funcionU(string input){
     int j = 0;
     
     while (getline(file, linea)) {  //leer línea por línea
-        cout << linea << endl;  //imprimir cada línea
         j = 0;
-        //se extraen los numeros del string
-        //int i = 0;
+        //se extraen los numeros del string y se guardan en la matriz
         string::size_type i = 0; 
         string s;
         while (i <= linea.length())
         {
             if(linea[i] == ',') {
-                cout << stoi(s)<< endl;
                 matriz[z][j] = stoi(s);
                 s.clear();
                 j ++;
@@ -95,15 +92,11 @@ int** generarMatrizAlineamiento(string cadena_S, string cadena_t, int** matriz_U
     n++;
     m++;
 
-    cout << "matri1";
-
     //crear una matriz dinámica de tamaño n x m -> para el algoritmo
     int** matriz = new int*[n];
     for (int i = 0; i < n; i++) {
         matriz[i] = new int[m];
     }
-
-    cout << "matri2";
 
 
     //se rellenar la matriz segun el algoritmo
@@ -129,8 +122,6 @@ int** generarMatrizAlineamiento(string cadena_S, string cadena_t, int** matriz_U
         }
     }
 
-    cout << endl;
-
     return matriz;
 }
 
@@ -149,37 +140,22 @@ void reconstruirAlineamiento(string cadenaS, string cadenaT, int** matrizAlineam
         if(i > 0 && j == 0) {
             alineamientoS = cadenaS[i] + alineamientoS;
             alineamientoT = "-" + alineamientoT;
-            cout<<"c1 | "<< alineamientoS<<"\n";
-            cout<<"c2 |"<< alineamientoT<<"\n";
-            cout<<"\n";
             i--;
         }else if(i == 0 && j > 0){
             alineamientoS = "-" + alineamientoS;
             alineamientoT = cadenaT[j] + alineamientoT;
-            cout<<"c1 | "<< alineamientoS<<"\n";
-            cout<<"c2 | "<< alineamientoT<<"\n";
-            cout<<"\n";
             j--;
         }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i-1][j] + v){
             alineamientoS = cadenaS[i] + alineamientoS;
             alineamientoT = "-" + alineamientoT;
-            cout<<"c1 | "<< alineamientoS<<"\n";
-            cout<<"c2 | "<< alineamientoT<<"\n";
-            cout<<"\n";
             i--;
         }else if(i>0 && j>0 && matrizAlineamiento[i][j] == matrizAlineamiento[i][j-1] + v) {
             alineamientoS = "-" + alineamientoS;
             alineamientoT = cadenaT[j] + alineamientoT;
-            cout<<"c1 | "<< alineamientoS<<"\n";
-            cout<<"c2 | "<< alineamientoT<<"\n";
-            cout<<"\n";
             j--;
         }else{
             alineamientoS = cadenaS[i] + alineamientoS;
             alineamientoT = cadenaT[j] + alineamientoT;
-            cout<<"c1 | "<< alineamientoS<<"\n";
-            cout<<"c2 | "<< alineamientoT<<"\n";
-            cout<<"\n";
             i--;
             j--;
         }
@@ -477,7 +453,7 @@ int main(int argc, char *argv[]){
         return 1;
     }
 
-    cout << "Cadenas\n-c1 " << cadena1 << " -c2 " << cadena2 << endl << "Matriz de coincidencia\n";
+    cout << "Cadenas -c1 = " << cadena1 << " , -c2 = " << cadena2 << "\n\n" << "Matriz de coincidencia\n";
 
     // Imprimir la matriz
     char nucleotidos[4] = {'A', 'G', 'C', 'T'};
@@ -488,7 +464,7 @@ int main(int argc, char *argv[]){
     }
     cout << "\n";
 
-    //recorrer las filas
+    //muestra matriz de coincidencia
     for (int i = 0; i < 4; i++) {
         cout << nucleotidos[i] << " ";
         //reecorrer las columnas
@@ -507,6 +483,8 @@ int main(int argc, char *argv[]){
     int n = ((cadena1.size()) + 1);
     int m = ((cadena2.size()) + 1);
 
+    //muestra matriz de puntuacion
+    cout << "\nMatriz de Puntuacion ~ Puntaje maximo = "<< matriz_alineamiento[n-1][m-1] << "\n\n";
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             cout << matriz_alineamiento[i][j] << ", ";
@@ -519,15 +497,13 @@ int main(int argc, char *argv[]){
     
     cout<<"\n\n";
 
-    // fin tiempo execution
+    // fin tiempo execution ~
     auto end = std::chrono::high_resolution_clock::now();
 
     std::chrono::duration<double> duration = (end-start);
     
 
     cout<<"Tiempo ejecucion: "<< duration.count() << " segundos\n";
-
-    //visualizarAlineamiento(alineamientoS, alineamientoT);
 
     visualizarAlineamiento(alineamientoS, alineamientoT);
 
